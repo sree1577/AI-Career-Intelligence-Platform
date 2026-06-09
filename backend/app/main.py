@@ -1,5 +1,12 @@
 from fastapi import FastAPI
 from app.api import resume, auth
+from app.database.db import Base, engine
+
+# Import all models so SQLAlchemy knows about them before creating tables
+from app.models import user  # noqa: F401
+
+# Auto-create all tables that don't exist yet (safe to run on every startup)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="AI Career Intelligence Platform",
